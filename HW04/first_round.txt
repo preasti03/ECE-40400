@@ -1,0 +1,23 @@
+For debugging purposes, we have listed selected outputs at various stages of AES below
+
+
+1. The first block of plaintext expressed as a BitVector:
+4d6f72676f74682c2077697468207468
+
+2. The first block of plaintext after XOR with the first 4 words of the key schedule
+200000000000004a49051a000c410603
+
+3. The first block of plaintext after performing the Sub Bytes Step in round 1: 
+b7636363636363d63b6ba263fe836f7b
+
+4. The first block of plaintext after performing the Row Shift Step in round 1:
+b763a27b636b6f633b8363d6fe636363
+
+5. The first block of plaintext after performing the Mix Columns Step in round 1:
+09f706f5776773675d551f1a42fefedf
+
+6. The first block of plaintext after XOR with the Round Key in round 1:
+6598749115061d0232237e762b9091ad
+
+*** Please note that in all the listings, the hex representation of the 128-bit block 
+is expressed as a state array flattened in column-major order

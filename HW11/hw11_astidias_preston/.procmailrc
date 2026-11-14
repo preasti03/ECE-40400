@@ -1,0 +1,69 @@
+SHELL=/bin/sh
+PATH=/usr/local/lib/mh:$PATH
+MAILDIR=$HOME/Mail
+LOGFILE=$HOME/Mail/logfile
+SENDMAIL=/usr/sbin/sendmail
+#VERBOSE=1
+VERBOSE=0
+EOL="
+"
+LOG="$EOL$EOL$EOL"
+LOG="New message log:$EOL"
+LOG=`perl GET_MESSAGE_INDEX`
+LOG="$EOL"
+
+
+##### PRESTONS RECIPES
+
+## Recipe 1 BEGIN
+# this rule will look at the header by default, no need to specify
+# the first thing the recipe looks for is the string From. from there, it looks for the < to find the first email
+# <*@*> simply states the domain and username are of no importance, the comma means there is more than one email
+# if a comma is found, the recipe will write the mail to recipe_1 file
+:0 :
+* ^From.*<*@*>,
+recipe_1
+
+## Recipe 1 END
+
+
+
+## Recipe 2 BEGIN
+# this recipe looks in the header for the Subject line for words that are likely to be seen in spam
+# some examples are diploma, medication, buy, hostway, degree, viagra
+# there are multiple options given for different capitalizations, as well as incorrectly spelled words
+:0 :
+* ^Subject.*([Dd]iploma|[Mm]edication|[Bb]uy|[Hh]ostway|[Dd]egree|[vV][ij]a[qg][rR]+a)
+recipe_2
+
+## Recipe 2 END
+
+
+## Recipe 3 BEGIN
+# in this recipe we use the B flag to search the body of the message
+# what we are looking for is the words casino or gold
+# i did account for any variation of the capitalization and write the message to recipe_3 file
+:0 B:
+* ([Gg][Oo][Ll][Dd]|[Cc][Aa][Ss][Ii][Nn][Oo])
+recipe_3
+
+## Recipe 3 END
+
+
+## Recipe 4 BEGIN
+# in this recipe we use the HB header to examine both the header and the body
+# two conditions are searched for, and both have to be true for the message to be flagged by the rule
+# it looks for text/plain as a content type, then text/html
+# two different types of content is an indicator for potential spam
+:0 HB:
+* ^Content-Type: text/plain
+* ^Content-Type: text/html
+recipe_4
+
+## Recipe 4 END
+
+
+
+
+
+
